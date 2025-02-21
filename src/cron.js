@@ -24,4 +24,4 @@ async function updateToiletData() {
     }
 }
 
-updateToiletData(); 
+updateToiletData();
