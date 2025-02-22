@@ -10,18 +10,26 @@ const pool = new Pool({
 
 const toiletService = new ToiletService(pool);
 
-console.log('Starting toilet data update...');
-
 async function updateToiletData() {
+    console.log('=== Starting one-time toilet data update ===');
     try {
-        const toilets = await toiletService.fetchToilets();
-        await toiletService.saveToilets(toilets);
-        console.log('Toilet data updated successfully');
+        const lastProcessedPage = await toiletService.getLastProcessedPage();
+        console.log(`Resuming from page ${lastProcessedPage + 1}`);
+        
+        const lastPage = await toiletService.fetchAllToilets(lastProcessedPage);
+        console.log('=== Data fetch completed ===');
+        console.log(`Total pages processed: ${lastPage}`);
+        
+        // Exit after completion
+        console.log('Exiting process...');
+        pool.end();
         process.exit(0);
     } catch (error) {
-        console.error('Error updating toilet data:', error);
+        console.error('Fatal error updating toilet data:', error);
+        pool.end();
         process.exit(1);
     }
 }
 
+// Run once immediately
 updateToiletData();

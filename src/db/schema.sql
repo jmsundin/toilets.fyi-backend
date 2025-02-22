@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS toilets (
-    id SERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     name VARCHAR(255),
     street VARCHAR(255),
     city VARCHAR(255),
